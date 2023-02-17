@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using R401_3_API.Models.EntityFramework;
+using R401_3_API.Models;
 using System.Linq;
+using System.Text;
 
 namespace R401_3_API
 {
@@ -11,7 +12,15 @@ namespace R401_3_API
             //Program.un_Deux();
             //Program.load_explicite();
             //Program.load_hatif();
-            Program.load_async();
+            //Program.load_async();
+            //Program.Exo2Q2();
+            //Program.Exo2Q3();
+            //Program.Exo2Q4();
+            //Program.Exo2Q5();
+            //Program.Exo2Q6();
+            //Program.Exo2Q7();
+            //Program.Exo2Q8();
+            //Program.Exo2Q9();
         }
 
 
@@ -95,6 +104,94 @@ namespace R401_3_API
                 {
                     Console.WriteLine(film.Nom);
                 }
+            }
+        }
+
+        //Afficher les emails des utilsiateurs
+        static void Exo2Q2()
+        {
+            using (var ctx = new LequmaContext())
+            {
+                foreach (var user in ctx.Utilisateurs.ToList())
+                {
+                    Console.WriteLine(user.Email);
+                }
+            }
+        }
+
+        // Afficher tous les utilisateurs par login croissant
+        static void Exo2Q3()
+        {
+            using (var ctx = new LequmaContext())
+            {
+                foreach (var user in ctx.Utilisateurs.OrderBy(u => u.Login).ToList())
+                {
+                    Console.WriteLine(user);
+                }
+            }
+        }
+
+        // Afficher les noms et id des films de la catégorie « Action ».
+        static void Exo2Q4()
+        {
+            using (var ctx = new LequmaContext())
+            {
+                //Search id of categorie
+                Categorie categorieAction = ctx.Categories.First(c => c.Nom == "Action");
+
+                foreach (var film in ctx.Films.Where(f => f.Categorie == categorieAction.Id ).ToList())
+                {
+                    Console.WriteLine(film);
+                }
+            }
+        }
+
+        // Afficher le nombre de catégories.
+        static void Exo2Q5()
+        {
+            using (var ctx = new LequmaContext())
+            {
+                Console.WriteLine(ctx.Categories.Count());                 
+            }
+        }
+
+
+        //Afficher la note la plus basse dans la base.
+        static void Exo2Q6()
+        {
+            using (var ctx = new LequmaContext())
+            {
+                Console.WriteLine(ctx.Avis.Min(a => a.Note)); 
+            }
+        }
+
+        //Rechercher tous les films qui commencent par « le » (pas de respect de la casse => 14 résultats)
+        static void Exo2Q7()
+        {
+            using (var ctx = new LequmaContext())
+            {
+                Console.WriteLine(ctx.Films.Where(f => f.Nom.Substring(0, 2).ToLower() == "le").Count() );             
+            }
+        }
+
+        //Afficher la note moyenne du film « Pulp Fiction » (note : le nom du film ne devra pas être sensible à la casse).
+        static void Exo2Q8()
+        {
+            using (var ctx = new LequmaContext())
+            {
+                //recherche le film
+                Film filmsearch = ctx.Films.First(f => f.Nom.ToLower() == "pulp fiction");
+
+                Console.WriteLine( ctx.Avis.Where(a => a.Film == filmsearch.Id).Average(a => a.Note) );             
+            }
+        }
+
+        //Afficher l’utilisateur qui a mis la meilleure note dans la base (on pourra le faire en 2 instructions, mais essayer de le faire en une seule).
+        static void Exo2Q9()
+        {
+            using (var ctx = new LequmaContext())
+            {      
+                Console.WriteLine(ctx.Utilisateurs.First(u => u.Id == ctx.Avis.First(a2 => a2.Note == ctx.Avis.Max(a => a.Note)).Utilisateur));
             }
         }
     }

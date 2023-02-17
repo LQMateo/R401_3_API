@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace R401_3_API.Models.EntityFramework;
+namespace R401_3_API.Models;
 
 public partial class LequmaContext : DbContext
 {
