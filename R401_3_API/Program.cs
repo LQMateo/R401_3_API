@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using R401_3_API.Models;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 
 namespace R401_3_API
@@ -21,6 +22,96 @@ namespace R401_3_API
             //Program.Exo2Q7();
             //Program.Exo2Q8();
             //Program.Exo2Q9();
+
+            //Exo 2.3
+            //addUser();
+            //Program.updateFilm();
+            //addAvis();
+            addtwofilms();
+        }
+
+        static void addUser()
+        {
+            using (var ctx = new LequmaContext())
+            {
+                var user = new Utilisateur()
+                {
+                    Login = "_etamo_",
+                    Pwd = "12345678",
+                    Email = "mateo.lq74@hds.com"
+                };
+                ctx.Utilisateurs.Add(user);
+                ctx.SaveChanges();
+
+            }
+        }
+
+        //Update film
+        static void updateFilm()
+        {
+            using (var ctx = new LequmaContext())
+            {
+                //Search film
+                Film film = ctx.Films.First(f => f.Nom.ToLower() == "L'armee des douze singes".ToLower() );
+                film.Description = "bah jsp";
+                ctx.SaveChanges();
+            }
+        }
+
+        static void addtwofilms()
+        {
+            using (var ctx = new LequmaContext())
+            {
+                Categorie categoriedrame = ctx.Categories.First(c => c.Nom.ToLower() == "Drame".ToLower());
+
+
+                var film1 = new Film()
+                {Id = 50010,
+                    Nom = "Avaater1",
+                    Description = "Je sais pas",
+                    Categorie = categoriedrame.Id
+                };
+
+                ctx.Films.Add(film1);
+                ctx.SaveChanges();
+
+                var film2 = new Film()
+                {Id = 50020,
+                    Nom = "Avaatar2",
+                    Description = "Je sais pas",
+                    Categorie = categoriedrame.Id
+                };
+
+                ctx.Films.Add(film2);
+                ctx.SaveChanges();
+
+                //Bien penser à ajouter dans la bd 
+                /*ctx.Films.AddRange(film1, film2);                
+                ctx.SaveChanges();*/
+
+            }
+                
+        }
+
+        //Add avi
+        static void addAvis()
+        {
+            using (var ctx = new LequmaContext())
+            {
+                Film film = ctx.Films.First(f => f.Nom.ToLower() == "L'armee des douze singes".ToLower());
+                Utilisateur user = ctx.Utilisateurs.First(u => u.Id== 1);
+
+                var avi = new Avi()
+                {
+                    Film = film.Id,
+                    Utilisateur = user.Id,
+                    Avis = "trop jsp je l'ai pas vu",
+                    Note = (decimal)4.50
+                };
+
+                ctx.Avis.Add(avi);
+                ctx.SaveChanges();
+            }
         }
 
 
